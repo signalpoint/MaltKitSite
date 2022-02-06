@@ -29,8 +29,6 @@ function startGame() {
   const canvas = game.getCanvas();
   const ctx = canvas.getContext('2d');
 
-//  pixelsPerMeter = (canvas.height - ledgeTop) / platformHeightInMeters;
-
   // GAME ENTITIES
 
   // BALL
@@ -158,8 +156,8 @@ function startGame() {
 
   // TODO turn into Projectile?
   const myRock = new Circle('myRock', {
-    x: myFrankenstein._getHandPosition().x,
-    y: myFrankenstein._getHandPosition().y,
+    x: myFrankenstein.getHandPosition().x,
+    y: myFrankenstein.getHandPosition().y,
     radius: 5,
     ctx: {
       fillStyle: 'gray',
@@ -183,7 +181,7 @@ function startGame() {
     applyGravity: function(elapsed) {
       myRock.velocityY =
         (game.getGravity() * elapsed) -
-        (myRock._launchVelocity * Math.sin(myRock._launchAngle));
+        (myRock.launchVelocity * Math.sin(myRock.launchAngle));
     },
 
     updateRockPosition: function(updateDelta) {
@@ -196,8 +194,8 @@ function startGame() {
 
       if (myRock.y > (canvas.height - myRock.radius*2)) {
         console.log('hit the ground');
-        myRock._inFlight = false;
-        myRock._onGround = true;
+        myRock.inFlight = false;
+        myRock.onGround = true;
         myRock.velocityY = 0;
       }
 
@@ -215,22 +213,22 @@ function startGame() {
     do: function(entity, time) {
 
       // TODO switch on  the "state" of an entity w/ just int values
-      if (entity._inFlight) {
-        entity._elapsedFrameTime = (time - this.lastTime)/1000;
-        entity._elapsedFlightTime = (time - entity._launchTime)/1000;
-        this.applyGravity(entity._elapsedFlightTime);
-        this.updateRockPosition(entity._elapsedFrameTime);
+      if (entity.inFlight) {
+        entity.elapsedFrameTime = (time - this.lastTime)/1000;
+        entity.elapsedFlightTime = (time - entity.launchTime)/1000;
+        this.applyGravity(entity.elapsedFlightTime);
+        this.updateRockPosition(entity.elapsedFrameTime);
         this.checkRockBounds();
       }
-      else if (entity._inHand) {
-        entity.x = myFrankenstein._getHandPosition().x;
-        entity.y = myFrankenstein._getHandPosition().y;
+      else if (entity.inHand) {
+        entity.x = myFrankenstein.getHandPosition().x;
+        entity.y = myFrankenstein.getHandPosition().y;
       }
-      else if (entity._onGround) {
+      else if (entity.onGround) {
         if (entity.x >= myFrankenstein.x && entity.x < (myFrankenstein.x + myFrankenstein.width)) {
           console.log('picked it up!');
-          entity._inHand = true;
-          entity._onGround = false;
+          entity.inHand = true;
+          entity.onGround = false;
         }
       }
 
@@ -273,14 +271,14 @@ function startGame() {
 
     var launchAngle = Math.atan(parseFloat(deltaY) / parseFloat(deltaX));
     var launchVelocity = 4 * deltaY / Math.sin(launchAngle) / game.ppm();
-    if (launchVelocity > myFrankenstein._maxThrowVelocity) {
-      launchVelocity = myFrankenstein._maxThrowVelocity;
+    if (launchVelocity > myFrankenstein.maxThrowVelocity) {
+      launchVelocity = myFrankenstein.maxThrowVelocity;
     }
 
-    if (myRock._inHand) {
+    if (myRock.inHand) {
 
-      myRock._launchAngle = launchAngle;
-      myRock._launchVelocity = launchVelocity;
+      myRock.launchAngle = launchAngle;
+      myRock.launchVelocity = launchVelocity;
 
     }
 
@@ -306,13 +304,13 @@ function startGame() {
 
     console.log('click', event.offsetX, event.offsetY);
 
-    if (myRock._inHand) {
+    if (myRock.inHand) {
 
-      myRock.velocityX = myRock._launchVelocity * Math.cos(myRock._launchAngle);
-      myRock.velocityY = myRock._launchVelocity * Math.sin(myRock._launchAngle);
-      myRock._inHand = false;
-      myRock._inFlight = true;
-      myRock._launchTime = +new Date();
+      myRock.velocityX = myRock.launchVelocity * Math.cos(myRock.launchAngle);
+      myRock.velocityY = myRock.launchVelocity * Math.sin(myRock.launchAngle);
+      myRock.inHand = false;
+      myRock.inFlight = true;
+      myRock.launchTime = +new Date();
       console.log('THROW!', myRock.velocityX, myRock.velocityY);
 
     }
