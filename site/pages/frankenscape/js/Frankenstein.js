@@ -13,14 +13,6 @@ class Frankenstein extends MkSprite {
       animated: true,
       do: function(entity, time) {
 
-//        entity.gravitySpeed += entity.gravity;
-//        entity.x += entity.speedX;
-//        entity.y += entity.speedY + entity.gravitySpeed;
-//        if (entity.y > (game.getCanvas().height - entity.height)) {
-//          entity.animationTimer.stop();
-//          entity.resetBehaviors();
-//        }
-
         // Reposition
         entity.y += entity.velocityY / game.getFps();
 
@@ -34,7 +26,6 @@ class Frankenstein extends MkSprite {
         if (entity.y > (game.getCanvas().height - entity.height)) {
           entity.animationTimer.stop();
           entity.velocityY = 0;
-          entity.resetBehaviors(); // TODO this seems shady!
         }
 
       }
