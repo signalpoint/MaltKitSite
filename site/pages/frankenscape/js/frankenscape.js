@@ -37,6 +37,8 @@ function loadGame(canvasId) {
 
   game.setHeight(20); // Our game is 20 "meters" tall.
 
+  initCanvasControls();
+
   frankensteinCoordinatesBadge = document.getElementById('frankensteinCoordinatesBadge');
   timeWarpSelect = document.getElementById('timeWarpSelect');
   timeWarpStrength = document.getElementById('timeWarpStrength');
@@ -131,28 +133,20 @@ function startGame() {
     game.setMouseX(x);
     game.setMouseY(y);
 
+    if (game.isPaused()) { return; }
+
+    // Rock angle and velocity.
     var deltaX = Math.abs(x - myFrankenstein.x);
     var deltaY = Math.abs(y - myFrankenstein.y);
-
     var launchAngle = Math.atan(parseFloat(deltaY) / parseFloat(deltaX));
     var launchVelocity = 4 * deltaY / Math.sin(launchAngle) / game.ppm();
     if (launchVelocity > myFrankenstein.maxThrowVelocity) {
       launchVelocity = myFrankenstein.maxThrowVelocity;
     }
-
     if (myRock.inHand) {
-
       myRock.launchAngle = launchAngle;
       myRock.launchVelocity = launchVelocity;
-
     }
-
-//    angleBadge.innerHTML = launchAngle;
-//    velocityBadge.innerHTML = launchVelocity;
-
-//    angleBadge.innerHTML = Math.round(launchAngle, 3);
-//    velocityBadge.innerHTML = Math.round(launchVelocity, 1);
-
     angleBadge.innerHTML = parseFloat(launchAngle).toFixed(3);
     velocityBadge.innerHTML = parseFloat(launchVelocity).toFixed(1);
 
@@ -164,8 +158,6 @@ function startGame() {
 //    mySquare.ctx.strokeStyle = context.isPointInPath(square, event.offsetX, event.offsetY) ?
 //      'green' : 'blue';
 
-//    game.refreshCanvas();
-
   });
 
   // mousedown
@@ -174,6 +166,20 @@ function startGame() {
     event.preventDefault();
 
     console.log('click', event.offsetX, event.offsetY);
+
+    if (game.isPaused()) {
+
+      switch (CANVAS_CTRL_OP) {
+
+        case 'drawPolygon':
+          console.log('draw a polygon dude');
+          break;
+
+      }
+
+      return;
+
+    }
 
     if (myRock.inHand) {
 
@@ -234,6 +240,8 @@ function startGame() {
         time: +new Date(),
       };
       keysDownStack.push(keyCode);
+
+      if (game.isPaused()) { return; }
 
       switch (keyCode) {
 
@@ -317,6 +325,8 @@ function startGame() {
       delete keysDown[keyCode];
       var index = keysDownStack.indexOf(keyCode);
       if (index !== -1) { keysDownStack.splice(index, 1); }
+
+      if (game.isPaused()) { return; }
 
       switch (keyCode) {
 
@@ -461,4 +471,124 @@ function timeWarpSelectRefreshInputs() {
 
   }
 
+}
+
+/**
+ * CANVAS CONTROLS
+ */
+
+var CANVAS_CTRL_OP = null; // play, pause, drawPolygon, etc
+
+function getCanvasButtons() {
+  return document.querySelectorAll('#canvasControls button');
+}
+function getCanvasButton(op) {
+  return document.querySelector('#canvasControls button[data-op="' + op + '"]');
+}
+function getCanvasActiveButton() {
+  return document.querySelectorAll('#canvasControls button.active');
+}
+
+function initCanvasControls() {
+
+  // Add click listeners to buttons.
+  var buttons = getCanvasButtons();
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', canvasControlBtnOnclick, true);
+  }
+
+  // Handle hover for play/pause button.
+//  var btn = getCanvasButton('togglePlay');
+//  var showPlay = function(btn) {
+//    var i = btn.querySelector('svg');
+//    i.classList.remove('fa-pause');
+//    i.classList.add('fa-play');
+//    btn.setAttribute('title', 'Play');
+//    btn.setAttribute('data-action', 'play');
+//  };
+//  var showPause = function(btn) {
+//    var i = btn.querySelector('svg');
+//    i.classList.remove('fa-play');
+//    i.classList.add('fa-pause');
+//    btn.setAttribute('title', 'Pause');
+//    btn.setAttribute('data-action', 'pause');
+//  };
+//  btn.addEventListener('mouseover', function(e) {
+//    game.isPaused() ? showPlay(this) : showPause(this);
+//  });
+//  btn.addEventListener('mouseout', function(e) {
+//    game.isPaused() ? showPause(this) : showPlay(this);
+//  });
+
+}
+
+function canvasControlBtnOnclick(e) {
+
+  var btn = this;
+  var op = btn.getAttribute('data-op');
+  CANVAS_CTRL_OP = op;
+
+  // Remove border from all buttons, then add a border to this button.
+  removeHighlightFromControlButtons();
+  btn.classList.add('active');
+  btn.classList.add('btn-dark');
+
+  if (game.isPaused()) {
+
+    // The game is paused...
+
+    // If the pressed play, un-pause the game, disable the play button,
+    // and enable the pause button.
+    if (op === 'play') {
+      game.togglePause();
+      btn.disabled = true;
+      getCanvasButton('pause').disabled = false;
+    }
+
+  }
+  else {
+
+    // They are playing the game...
+
+    // Pause the game, disable the pause button,
+    // and enable the play button.
+    game.togglePause();
+    getCanvasButton('pause').disabled = true;
+    getCanvasButton('play').disabled = false;
+
+
+  }
+
+  switch (op) {
+
+    case 'play':
+      playButtonOnclick(this);
+      break;
+
+    case 'pause':
+      pauseButtonOnclick(this);
+      break;
+
+    case 'drawPolygon':
+      drawPolygonOnclick(this);
+      break;
+
+  }
+
+}
+
+function removeHighlightFromControlButtons() {
+  var buttons = getCanvasButtons();
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove('btn-dark');
+  }
+}
+
+function playButtonOnclick(btn) {
+}
+
+function pauseButtonOnclick(btn) {
+}
+
+function drawPolygonOnclick(btn) {
 }
