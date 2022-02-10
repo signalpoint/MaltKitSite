@@ -21,6 +21,9 @@ var jsSrc = [
   './js/canvas-controls.js',
   './js/controls/grid.js',
   './js/controls/rubber-band.js',
+  './js/controls/rubber-circle.js',
+  './js/controls/rubber-rectangle.js',
+  './js/controls/rubber-polygon.js',
 
 ];
 
