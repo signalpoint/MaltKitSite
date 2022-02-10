@@ -1,4 +1,4 @@
-var CANVAS_CTRL_OP = null; // play, pause, drawPolygon, etc
+var CANVAS_CTRL_OP = null; // drawPolygon, etc
 
 function getCanvasButtons() {
   return document.querySelectorAll('#canvasControls button');
@@ -18,29 +18,6 @@ function initCanvasControls() {
     buttons[i].addEventListener('click', canvasControlBtnOnclick, true);
   }
 
-  // Handle hover for play/pause button.
-//  var btn = getCanvasButton('togglePlay');
-//  var showPlay = function(btn) {
-//    var i = btn.querySelector('svg');
-//    i.classList.remove('fa-pause');
-//    i.classList.add('fa-play');
-//    btn.setAttribute('title', 'Play');
-//    btn.setAttribute('data-action', 'play');
-//  };
-//  var showPause = function(btn) {
-//    var i = btn.querySelector('svg');
-//    i.classList.remove('fa-play');
-//    i.classList.add('fa-pause');
-//    btn.setAttribute('title', 'Pause');
-//    btn.setAttribute('data-action', 'pause');
-//  };
-//  btn.addEventListener('mouseover', function(e) {
-//    game.isPaused() ? showPlay(this) : showPause(this);
-//  });
-//  btn.addEventListener('mouseout', function(e) {
-//    game.isPaused() ? showPause(this) : showPlay(this);
-//  });
-
 }
 
 function canvasControlBtnOnclick(e) {
@@ -58,44 +35,30 @@ function canvasControlBtnOnclick(e) {
 
     // The game is paused...
 
-    // If the pressed play, un-pause the game, disable the play button,
-    // and enable the pause button.
-    if (op === 'play') {
-      game.togglePause();
-      btn.disabled = true;
-      getCanvasButton('pause').disabled = false;
-    }
-
   }
   else {
 
     // They are playing the game...
 
-    // Pause the game, disable the pause button,
-    // and enable the play button.
-    game.togglePause();
-    getCanvasButton('pause').disabled = true;
-    getCanvasButton('play').disabled = false;
-
+    // Pause the game no matter what button is clicked, except for the grid toggle.
+    if (op != 'toggleGrid') {
+      getPlaybackButton('pause').click();
+    }
 
   }
 
   switch (op) {
 
-    case 'play':
-      playButtonOnclick(this);
-      break;
-
-    case 'pause':
-      pauseButtonOnclick(this);
-      break;
-
-    case 'grid':
+    case 'toggleGrid':
       gridButtonOnclick(this);
       break;
 
+    case 'drawRectangle':
+      rectangleButtonOnclick(this, e);
+      break;
+
     case 'drawPolygon':
-      drawPolygonOnclick(this);
+      drawPolygonOnclick(this, e);
       break;
 
   }
@@ -109,20 +72,10 @@ function removeHighlightFromControlButtons() {
   }
 }
 
-function playButtonOnclick(btn) {
+function drawPolygonOnclick(btn, e) {
 }
 
-function pauseButtonOnclick(btn) {
-}
-
-function gridButtonOnclick(btn) {
-  
-}
-
-function drawPolygonOnclick(btn) {
-}
-
-function drawPolygonClickHandler(x, y, e) {
+function drawPolygonMouseDown(x, y, e) {
   //centerX, centerY, radius, sides, startAngle, ctx
   var point = new MkPoint(x, y);
   var polygon = new MkPolygon();

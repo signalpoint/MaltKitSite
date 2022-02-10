@@ -4,7 +4,24 @@
 
     <div class="col-12 col-md-7">
 
-      <canvas id="myCanvas" width="640" height="480" style="border:1px solid #000000;"></canvas>
+      <div class="mb-1">
+        <canvas id="myCanvas" width="640" height="480" style="border:1px solid #000000;"></canvas>
+      </div>
+
+      <!-- PLAYBACK CONTROLS -->
+      <div id="playbackControls" class="btn-group" role="group" aria-label="Playback controls">
+
+        <!-- PLAY -->
+        <button type="button" class="btn btn-light" data-op="play" title="Play" disabled>
+          <i class="fas fa-play"></i>
+        </button>
+
+        <!-- PAUSE -->
+        <button type="button" class="btn btn-light" data-op="pause" title="Pause">
+          <i class="fas fa-pause"></i>
+        </button>
+
+      </div>
 
     </div>
     <div class="col-12 col-md-5">
@@ -13,16 +30,22 @@
 
         <div class="col-2">
 
-          <div id="canvasControls" class="btn-group btn-group-vertical" role="group" aria-label="Basic example">
+          <!-- CANVAS CONTROLS -->
+          <div id="canvasControls" class="btn-group btn-group-vertical" role="group" aria-label="Canvas controls">
 
-            <!-- PLAY -->
-            <button type="button" class="btn btn-light" data-op="play" title="Play" disabled>
-              <i class="fas fa-play"></i>
+            <!-- GRID -->
+            <button type="button" class="btn btn-light" data-op="toggleGrid" title="Toggle Grid">
+              <i class="fas fa-border-all"></i>
             </button>
 
-            <!-- PAUSE -->
-            <button type="button" class="btn btn-light" data-op="pause" title="Pause">
-              <i class="fas fa-pause"></i>
+            <!-- CIRCLE -->
+            <button type="button" class="btn btn-light" data-op="drawCircle" title="Draw Circle">
+              <i class="far fa-circle"></i>
+            </button>
+
+            <!-- RECTANGLE -->
+            <button type="button" class="btn btn-light" data-op="drawRectangle" title="Draw Rectangle / Square">
+              <i class="far fa-square"></i>
             </button>
 
             <!-- DRAW POLYGON -->
