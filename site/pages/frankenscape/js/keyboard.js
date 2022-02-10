@@ -1,7 +1,5 @@
 mk.CanvasGame.prototype.initKeyboard = function() {
 
-  console.log('init keyboard');
-
   // KEYBOARD CONTROLS
 
   // Keys we care about (for now).
