@@ -17,8 +17,10 @@ var jsSrc = [
   './js/mouse.js',
   './js/keyboard.js',
 
+  './js/controls/playback-controls.js',
   './js/canvas-controls.js',
   './js/controls/grid.js',
+  './js/controls/rubber-band.js',
 
 ];
 
