@@ -1,8 +1,19 @@
+// TODO rename to var RUBBER = { origin: null, dragging: false, etc.};
+// Keeps it all in one spot, and easier for devs.
+
 var RUBBER_ORIGIN = null; // The MkPoint to track the origain of the rubber shape.
 var RUBBER_DRAGGING = false;
 
 var RUBBER_CIRCLE = null;
 var RUBBER_RECTANGLE = null;
+var RUBBER_POLYGON = null;
+
+var RUBBER = {
+
+  mouseMovePolygon: null,
+  drawnPolygon: null,
+
+};
 
 function updateRubberBand(shape, loc) {
   switch (shape) {
