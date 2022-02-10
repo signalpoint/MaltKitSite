@@ -16,20 +16,16 @@ function drawCircleMouseDown(x, y, e) {
   }
 }
 
-function drawCircleMouseMove(x, y, e) {
-  if (RUBBER_DRAGGING) {
-    game.restoreCanvasDrawingArea();
-    var loc = new MkPoint(x, y);
-    updateRubberBand('circle', loc);
-    drawGuideWires(loc);
-  }
+function drawCircleMouseMove(loc, e) {
+  game.restoreCanvasDrawingArea();
+  updateRubberBand('circle', loc);
 }
 
 function updateRubberCircle(loc) {
   RUBBER_CIRCLE.width = Math.abs(loc.x - RUBBER_ORIGIN.x);
   RUBBER_CIRCLE.height = Math.abs(loc.y - RUBBER_ORIGIN.y);
   var angle, radius;
-  if (RUBBER_ORIGIN.y === loc.y) {
+  if (RUBBER_ORIGIN.y === loc.y) { // Handle horizontol line (because we can't divide by zero).
     radius = Math.abs(loc.x - RUBBER_ORIGIN.x);
   }
   else {
