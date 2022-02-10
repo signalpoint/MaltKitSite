@@ -16,13 +16,9 @@ function drawRectangleMouseDown(x, y, e) {
   }
 }
 
-function drawRectangleMouseMove(x, y, e) {
-  if (RUBBER_DRAGGING) {
-    game.restoreCanvasDrawingArea();
-    var loc = new MkPoint(x, y);
-    updateRubberBand('rectangle', loc);
-    drawGuideWires(loc);
-  }
+function drawRectangleMouseMove(loc, e) {
+  game.restoreCanvasDrawingArea();
+  updateRubberBand('rectangle', loc);
 }
 
 function updateRubberBandRectangle(loc) {
