@@ -37,6 +37,7 @@ function loadGame(canvasId) {
 
   game.setHeight(20); // Our game is 20 "meters" tall.
 
+  initPlaybackControls();
   initCanvasControls();
 
   frankensteinCoordinatesBadge = document.getElementById('frankensteinCoordinatesBadge');
