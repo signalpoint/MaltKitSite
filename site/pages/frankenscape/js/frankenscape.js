@@ -33,9 +33,15 @@ var game, // required
 
 function loadGame(canvasId) {
 
-  game = new mk.CanvasGame(canvasId, '2d');
+  game = new mk.CanvasGame(canvasId, '2d', [
+    'MkCanvasControls'
+  ]);
 
   game.setHeight(20); // Our game is 20 "meters" tall.
+
+  game.addMod('MkCanvasControls', new MkCanvasControls());
+
+  game.initMods();
 
   initPlaybackControls();
   initCanvasControls();

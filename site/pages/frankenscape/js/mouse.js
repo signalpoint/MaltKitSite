@@ -17,17 +17,7 @@ mk.CanvasGame.prototype.initMouse = function() {
 
     if (game.isPaused()) {
 
-      switch (CANVAS_CTRL_OP) {
-
-        case 'drawCircle':
-          drawCircleMouseMove(x, y, e);
-          break;
-
-        case 'drawRectangle':
-          drawRectangleMouseMove(x, y, e);
-          break;
-
-      }
+      return;
 
     }
 
@@ -73,22 +63,6 @@ mk.CanvasGame.prototype.initMouse = function() {
 
     if (game.isPaused()) {
 
-      switch (CANVAS_CTRL_OP) {
-
-        case 'drawCircle':
-          drawCircleMouseDown(x, y, e);
-          break;
-
-        case 'drawRectangle':
-          drawRectangleMouseDown(x, y, e);
-          break;
-
-        case 'drawPolygon':
-          drawPolygonMouseDown(x, y, e); // TODO why are we calling a "click" handler here?
-          break;
-
-      }
-
       return;
 
     }
@@ -129,18 +103,6 @@ mk.CanvasGame.prototype.initMouse = function() {
     console.log('release', x, y);
 
     if (game.isPaused()) {
-
-      switch (CANVAS_CTRL_OP) {
-
-        case 'drawCircle':
-          drawCircleMouseUp(x, y, e);
-          break;
-
-        case 'drawRectangle':
-          drawRectangleMouseUp(x, y, e);
-          break;
-
-      }
 
       return;
 
