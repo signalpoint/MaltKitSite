@@ -20,6 +20,7 @@ var jsSrc = [
   './js/controls/playback-controls.js',
   './js/canvas-controls.js',
   './js/controls/grid.js',
+  './js/controls/pointer.js',
   './js/controls/rubber-band.js',
   './js/controls/rubber-circle.js',
   './js/controls/rubber-rectangle.js',

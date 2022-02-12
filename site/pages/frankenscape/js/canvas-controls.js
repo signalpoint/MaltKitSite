@@ -1,5 +1,66 @@
 var CANVAS_CTRL_OP = null; // drawPolygon, etc
 
+mk.CANVAS_CTRL = {
+
+  // PANES
+  panes: null,
+  getPane: function(op) {
+    return document.querySelector('#canvasControlPanes .canvas-control-pane[data-op="' + op + '"]');
+  },
+  showPane: function(op) {
+    console.log('showing pane: ' + op);
+    this.getPane(op).classList.remove('d-none');
+  },
+  hidePanes: function() {
+    for (var i = 0; i < this.panes.length; i++) {
+      this.panes[i].classList.add('d-none');
+    }
+  },
+
+  // POINTER
+  pointerEntity: null,
+  refreshPointerEntityPane: function() {
+    document.getElementById('pointerEntityPane').innerHTML = this.renderEntityPane();
+  },
+
+  // ENTITY
+  renderEntityPane: function() {
+
+    var entity = this.pointerEntity;
+    var html = '';
+
+    var items = [];
+
+//    id
+//    type
+//    x
+//    y
+//    vX
+//    vY
+//    gravity
+//    animationTimer
+
+    for (const [property, value] of Object.entries(entity)) {
+      // TODO render each property w/ a widget to tweak it!
+      // Careful though, the widget to edit it should be the same as when you're drawing it
+      items.push(
+        '<li class="list-group-item">' +
+          '<strong>' + property + '</strong>: ' + entity[property] +
+        '</li>'
+      );
+    }
+
+    html += '<ul class="list-group mb-1">' + items.join('') + '</ul>';
+
+    // Code
+    html += '<pre>' + JSON.stringify(entity) + '</pre>';
+
+    return html;
+
+  }
+
+};
+
 function getCanvasButtons() {
   return document.querySelectorAll('#canvasControls button');
 }
@@ -17,6 +78,9 @@ function initCanvasControls() {
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', canvasControlBtnOnclick, true);
   }
+
+  // Gather pane divs.
+  mk.CANVAS_CTRL.panes = document.querySelectorAll('#canvasControlPanes .canvas-control-pane');
 
 }
 
@@ -47,20 +111,18 @@ function canvasControlBtnOnclick(e) {
 
   }
 
+  // Update the control panes.
+  var ctrl = mk.CANVAS_CTRL;
+  ctrl.hidePanes();
+  ctrl.showPane(CANVAS_CTRL_OP);
+
+  // Invoke the button's click handler.
   switch (op) {
-
-    case 'toggleGrid':
-      gridButtonOnclick(this);
-      break;
-
-    case 'drawRectangle':
-      rectangleButtonOnclick(this, e);
-      break;
-
-    case 'drawPolygon':
-      drawPolygonOnclick(this, e);
-      break;
-
+    case 'toggleGrid': gridButtonOnclick(this); break;
+    case 'pointer': pointerButtonOnclick(this); break;
+    case 'drawCircle': circleButtonOnclick(this, e); break;
+    case 'drawRectangle': rectangleButtonOnclick(this, e); break;
+    case 'drawPolygon': polygonButtonOnclick(this, e); break;
   }
 
 }
@@ -72,11 +134,18 @@ function removeHighlightFromControlButtons() {
   }
 }
 
-function drawPolygonOnclick(btn, e) {
+
+
+//function addDrawnShape(shapeName, id, shape) {
+//  shape.id = id;
+//  shape.type = shapeName;
+//  game.addEntity(shape);
+//}
+
+function getDrawnShape(shapeName, id) {
+  return game.getEntity(shapeName, id);
 }
 
-function drawPolygonMouseDown(x, y, e) {
-  //centerX, centerY, radius, sides, startAngle, ctx
-  var point = new MkPoint(x, y);
-  var polygon = new MkPolygon();
+function removeDrawnShape(shapeName, id) {
+  delete game.getEntities()[shapeName][id];
 }

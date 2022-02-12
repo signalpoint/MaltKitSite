@@ -10,8 +10,20 @@ var RUBBER_POLYGON = null;
 
 var RUBBER = {
 
+  origin: null,
+  stretching: false,
+  shapeName: null,
+  shape: null, // while stretching
+  drawnShape: null, // after stretching
+
   mouseMovePolygon: null,
   drawnPolygon: null,
+
+  clear: function() {
+    this.origin = null;
+    this.stretching = false;
+    this.shapeName = null;
+  }
 
 };
 

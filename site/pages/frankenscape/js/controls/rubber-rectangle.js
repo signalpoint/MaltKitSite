@@ -7,36 +7,44 @@ function rectangleButtonOnclick(btn, e) {
 }
 
 function drawRectangleMouseDown(x, y, e) {
-  if (!RUBBER_ORIGIN) {
-    RUBBER_RECTANGLE = {};
-    RUBBER_ORIGIN = new MkPoint(x, y);
-    console.log('RUBBER_ORIGIN', 'rectangle', RUBBER_ORIGIN);
-    game.saveCanvasDrawingArea();
-    RUBBER_DRAGGING = true;
-  }
+
 }
 
 function drawRectangleMouseMove(loc, e) {
-  game.restoreCanvasDrawingArea();
   updateRubberBand('rectangle', loc);
 }
 
 function updateRubberBandRectangle(loc) {
-  RUBBER_RECTANGLE.width = Math.abs(loc.x - RUBBER_ORIGIN.x);
-  RUBBER_RECTANGLE.height = Math.abs(loc.y - RUBBER_ORIGIN.y);
-  RUBBER_RECTANGLE.x = loc.x > RUBBER_ORIGIN.x ? RUBBER_ORIGIN.x : loc.x;
-  RUBBER_RECTANGLE.y = loc.y > RUBBER_ORIGIN.y ? RUBBER_ORIGIN.y : loc.y;
+  RUBBER.shape.x = loc.x > RUBBER.origin.x ? RUBBER.origin.x : loc.x;
+  RUBBER.shape.y = loc.y > RUBBER.origin.y ? RUBBER.origin.y : loc.y;
+  RUBBER.shape.width = Math.abs(loc.x - RUBBER.origin.x);
+  RUBBER.shape.height = Math.abs(loc.y - RUBBER.origin.y);
+//  RUBBER.shape.x = loc.x > RUBBER.origin.x ? RUBBER.origin.x : loc.x;
+//  RUBBER.shape.y = loc.y > RUBBER.origin.y ? RUBBER.origin.y : loc.y;
 }
 
 function drawRubberBandRectangle() {
-  context.beginPath();
-  context.moveTo(RUBBER_ORIGIN.x, RUBBER_ORIGIN.y);
-  context.strokeRect(RUBBER_RECTANGLE.x, RUBBER_RECTANGLE.y, RUBBER_RECTANGLE.width, RUBBER_RECTANGLE.height);
-  context.stroke();
+
+  var entity = {
+    x: RUBBER.origin.x,
+    y: RUBBER.origin.y,
+    width: RUBBER.shape.width,
+    height: RUBBER.shape.height
+  };
+
+  var rectangleId = 'foo';
+  var rectangle = new MkRectangle(rectangleId, entity);
+  rectangle.draw();
+
+//  context.beginPath();
+//  context.moveTo(RUBBER.origin.x, RUBBER.origin.y);
+//  context.strokeRect(RUBBER.shape.x, RUBBER.shape.y, RUBBER.shape.width, RUBBER.shape.height);
+//  context.stroke();
+
+  RUBBER.drawnShape = rectangle;
+
 }
 
 function drawRectangleMouseUp(x, y, e) {
-  game.restoreCanvasDrawingArea();
   updateRubberBand('rectangle', new MkPoint(x, y));
-  RUBBER_DRAGGING = false;
 }

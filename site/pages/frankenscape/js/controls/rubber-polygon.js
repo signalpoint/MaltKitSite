@@ -7,43 +7,39 @@ function polygonButtonOnclick(btn, e) {
 }
 
 function drawPolygonMouseDown(x, y, e) {
-  if (!RUBBER_ORIGIN) {
-    RUBBER_POLYGON = {};
-    RUBBER_ORIGIN = new MkPoint(x, y);
-    console.log('RUBBER_ORIGIN', 'polygon', RUBBER_ORIGIN);
-    game.saveCanvasDrawingArea();
-    RUBBER_DRAGGING = true;
-  }
+
 }
 
 function drawPolygonMouseMove(loc, e) {
-  game.restoreCanvasDrawingArea();
   updateRubberBand('polygon', loc);
 }
 
 function updateRubberBandPolygon(loc) {
-  RUBBER_POLYGON.width = Math.abs(loc.x - RUBBER_ORIGIN.x);
-//  RUBBER_POLYGON.height = Math.abs(loc.y - RUBBER_ORIGIN.y);
-//  RUBBER_POLYGON.x = loc.x > RUBBER_ORIGIN.x ? RUBBER_ORIGIN.x : loc.x;
-//  RUBBER_POLYGON.y = loc.y > RUBBER_ORIGIN.y ? RUBBER_ORIGIN.y : loc.y;
+  RUBBER.shape.width = Math.abs(loc.x - RUBBER.origin.x);
 }
 
 function drawRubberBandPolygon() {
-  var polygon = RUBBER.drawnPolygon = new MkPolygon(
-    RUBBER_ORIGIN.x,
-    RUBBER_ORIGIN.y,
-    RUBBER_POLYGON.width,
-    8, // sides
-    (Math.PI / 180) * 45 // startAngle (45)
-  );
-  context.beginPath();
+
+  var entity = {
+    x: RUBBER.origin.x,
+    y: RUBBER.origin.y,
+    radius: RUBBER.shape.width,
+    sides: 5,
+    startAngle: (Math.PI / 180) * 45
+  };
+
+  var polygonId = 'foo';
+  var polygon = new MkPolygon(polygonId, entity);
+  context.beginPath(); // TODO why start the path here? seems like that'd happen in paint/draw!
   polygon.createPath();
   polygon.stroke();
   polygon.fill();
+  // TODO closePath()????
+
+  RUBBER.drawnShape = polygon;
+
 }
 
 function drawPolygonMouseUp(x, y, e) {
-  game.restoreCanvasDrawingArea();
   updateRubberBand('polygon', new MkPoint(x, y));
-  RUBBER_DRAGGING = false;
 }

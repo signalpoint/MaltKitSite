@@ -12,8 +12,8 @@ mk.CanvasGame.prototype.initMouse = function() {
     var y = e.offsetY;
 
     // Hang onto the last mouse coordinates.
-    game.setMouseX(x);
-    game.setMouseY(y);
+//    game.setMouseX(x);
+//    game.setMouseY(y);
 
     if (game.isPaused()) {
 
@@ -59,7 +59,7 @@ mk.CanvasGame.prototype.initMouse = function() {
     var x = e.offsetX;
     var y = e.offsetY;
 
-    console.log('click', x, y);
+//    console.log('click', x, y);
 
     if (game.isPaused()) {
 
@@ -100,7 +100,7 @@ mk.CanvasGame.prototype.initMouse = function() {
     var x = e.offsetX;
     var y = e.offsetY;
 
-    console.log('release', x, y);
+//    console.log('release', x, y);
 
     if (game.isPaused()) {
 
