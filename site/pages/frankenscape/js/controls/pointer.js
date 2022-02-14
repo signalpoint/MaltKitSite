@@ -37,11 +37,7 @@ function pointerButtonOnclick(btn, e) {
 function pointerMouseDown(x, y, e) {
 
   // Did I click on any shapes?
-  var shapeTypes = [
-    'MkCircle',
-    'MkRectangle',
-    'MkPolygon',
-  ];
+  var shapeTypes = mk.shapeTypes();
   for (var i = 0; i < shapeTypes.length; i++) {
     var type = shapeTypes[i];
     var shapes = game.getEntitiesByType(type);
@@ -49,14 +45,10 @@ function pointerMouseDown(x, y, e) {
       for (const [id, shape] of Object.entries(shapes)) {
         shape.createPath(context);
         if (context.isPointInPath(x, y)) {
-
           var ctrl = mk.CANVAS_CTRL;
           ctrl.pointerEntity = shape;
           ctrl.refreshPointerEntityPane();
-
           mk.DRAG.startDragging(x, y, shape);
-
-
         }
       }
     }
@@ -105,8 +97,6 @@ function pointerMouseUp(x, y, e) {
     mk.DRAG.stopDragging();
 //    game.refreshCanvas();
 
-// TODO THE PROBLEM!!!!!
-// The problem is/was we shouldn't be referring to
 
   }
 
