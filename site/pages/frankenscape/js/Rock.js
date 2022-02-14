@@ -75,6 +75,24 @@ function initRock() {
       return entity.x >= myFrankenstein.x && entity.x < (myFrankenstein.x + myFrankenstein.width);
     },
 
+    checkCollisions: function() {
+      var shapeTypes = mk.shapeTypes();
+      for (var i = 0; i < shapeTypes.length; i++) {
+        var type = shapeTypes[i];
+        var shapes = game.getEntitiesByType(type);
+        if (shapes) {
+          for (const [id, shape] of Object.entries(shapes)) {
+            if (shape.type == 'Circle' && shape.id == myRock.id) { continue; } // Skip self.
+            var collision = myRock.collidesWith(shape);
+            if (collision.overlap) {
+              console.log('bingo bango!');
+            }
+          }
+        }
+      }
+
+    },
+
     do: function(entity, time) {
 
       if (entity.inFlight) {
@@ -82,6 +100,7 @@ function initRock() {
         entity.elapsedFlightTime = (time - entity.launchTime)/1000;
         this.applyGravity(entity.elapsedFlightTime);
         this.updateRockPosition(entity.elapsedFrameTime);
+        this.checkCollisions();
         this.checkRockBounds();
       }
       else if (entity.inHand) {
