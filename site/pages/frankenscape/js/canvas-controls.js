@@ -43,11 +43,20 @@ mk.CANVAS_CTRL = {
     for (const [property, value] of Object.entries(entity)) {
       // TODO render each property w/ a widget to tweak it!
       // Careful though, the widget to edit it should be the same as when you're drawing it
-      items.push(
-        '<li class="list-group-item">' +
-          '<strong>' + property + '</strong>: ' + entity[property] +
-        '</li>'
-      );
+      var item = '';
+      item += '<li class="list-group-item"><strong>' + property + '</strong>: ';
+      if (Array.isArray(value)) {
+        var pieces = [];
+        for (var i = 0; i < value.length; i++) {
+          pieces.push(JSON.stringify(value[i]));
+        }
+        item += pieces.join(', ');
+      }
+      else {
+        item += value;
+      }
+      item += '</li>';
+      items.push(item);
     }
 
     html += '<ul class="list-group mb-1">' + items.join('') + '</ul>';
